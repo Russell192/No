@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Math No Problem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base transitions for normal mode */
+        .tab-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tab-panel {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* --- Neuro-Accessibility Mode Overrides --- */
+        
+        /* 1. Reduced Motion & Animations */
+        body.neuro-mode *, 
+        body.neuro-mode {
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
+        }
+
+        /* 2. Dyslexic-Friendly Typography */
+        body.neuro-mode * {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif !important;
+            line-height: 1.8 !important;
+            letter-spacing: 0.05em !important;
+        }
+
+        /* 3. Softened Contrasts */
+        /* Light Mode Softer Contrast */
+        body.neuro-mode {
+            background-color: #fdfaf6 !important; 
+            color: #2c2c2c !important;
+        }
+        
+        /* Dark Mode Softer Contrast */
+        html.dark body.neuro-mode {
+            background-color: #2c2c2e !important; 
+            color: #e5e5ea !important;
+        }
+
+        /* Soften specific elements in Neuro Mode */
+        html.dark body.neuro-mode .dark\:bg-gray-800 { background-color: #3a3a3c !important; }
+        html.dark body.neuro-mode .dark\:text-gray-200 { color: #f2f2f7 !important; }
+        
+        /* 4. Enhanced Focus Indicators for Keyboard Navigation */
+        body.neuro-mode *:focus,
+        body.neuro-mode *:focus-visible {
+            outline: 4px solid #ff9500 !important; /* Thick, high-visibility orange */
+            outline-offset: 4px !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+
+    <!-- Top Controls: Toggles -->
+    <header class="p-4 md:p-6 flex justify-end gap-6 w-full max-w-5xl mx-auto">
+        
+        <!-- Dark Mode Toggle -->
+        <div class="flex items-center gap-3">
+            <label for="dark-toggle" class="text-sm font-medium cursor-pointer" aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i> Dark Mode
+            </label>
+            <button id="dark-toggle" role="switch" aria-checked="false" aria-label="Toggle Dark Mode" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-300 dark:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors duration-300">
+                <span class="translate-x-1 dark:translate-x-6 inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300"></span>
+            </button>
+        </div>
+
+        <!-- Neuro-Accessibility Toggle -->
+        <div class="flex items-center gap-3">
+            <label for="neuro-toggle" class="text-sm font-medium cursor-pointer" aria-label="Toggle Neuro-Accessibility Mode">
+                <i class="fa-solid fa-universal-access"></i> Neuro-Access
+            </label>
+            <button id="neuro-toggle" role="switch" aria-checked="false" aria-label="Toggle Neuro-Accessibility Mode" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors duration-300">
+                <span class="neuro-thumb translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300"></span>
+            </button>
+        </div>
+
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center pt-20 px-4">
+        
+        <!-- Heading -->
+        <h1 class="text-4xl md:text-5xl font-serif mb-16 tracking-wide text-center">
+            No Math No Problem
+        </h1>
+
+        <!-- Tab Buttons Container -->
+        <div class="flex gap-6 md:gap-10 mb-16" role="tablist" aria-label="Interactive Tools">
+            
+            <!-- Button 1: Calculator -->
+            <button id="tab-btn-1" role="tab" aria-selected="false" aria-controls="panel-1" aria-expanded="false" class="tab-btn w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-blue-600 hover:bg-blue-700 hover:-translate-y-1 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 flex items-center justify-center text-white text-2xl md:text-3xl">
+                <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+                <span class="sr-only">Balance Sheet</span>
+            </button>
+
+            <!-- Button 2: Chart/Data -->
+            <button id="tab-btn-2" role="tab" aria-selected="false" aria-controls="panel-2" aria-expanded="false" class="tab-btn w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-purple-600 hover:bg-purple-700 hover:-translate-y-1 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 flex items-center justify-center text-white text-2xl md:text-3xl">
+                <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                <span class="sr-only">Income</span>
+            </button>
+
+            <!-- Button 3: Money/Finance -->
+            <button id="tab-btn-3" role="tab" aria-selected="false" aria-controls="panel-3" aria-expanded="false" class="tab-btn w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-teal-600 hover:bg-teal-700 hover:-translate-y-1 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 flex items-center justify-center text-white text-2xl md:text-3xl">
+                <i class="fa-solid fa-circle-dollar-to-slot" aria-hidden="true"></i>
+                <span class="sr-only">Cashflow</span>
+            </button>
+
+        </div>
+
+        <!-- Tab Panels Container -->
+        <div class="w-full max-w-2xl relative min-h-[200px]">
+            
+            <!-- Panel 1 -->
+            <div id="panel-1" role="tabpanel" aria-labelledby="tab-btn-1" hidden class="tab-panel absolute top-0 left-0 w-full bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 opacity-0 transform translate-y-4 pointer-events-none">
+                <h2 class="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400"><i class="fa-solid fa-calculator mr-2"></i> Balance Sheet</h2>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Review your assets, liabilities, and equity at a glance to understand your current financial position.</p>
+                <button class="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 px-4 py-2 rounded-lg font-medium hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500">View Balance Sheet</button>
+            </div>
+
+            <!-- Panel 2 -->
+            <div id="panel-2" role="tabpanel" aria-labelledby="tab-btn-2" hidden class="tab-panel absolute top-0 left-0 w-full bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 opacity-0 transform translate-y-4 pointer-events-none">
+                <h2 class="text-2xl font-bold mb-4 text-purple-600 dark:text-purple-400"><i class="fa-solid fa-chart-column mr-2"></i> Income</h2>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Track your revenue and expenses over time. See exactly where your money is coming from and where it is going.</p>
+                <button class="bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 px-4 py-2 rounded-lg font-medium hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500">View Income</button>
+            </div>
+
+            <!-- Panel 3 -->
+            <div id="panel-3" role="tabpanel" aria-labelledby="tab-btn-3" hidden class="tab-panel absolute top-0 left-0 w-full bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 opacity-0 transform translate-y-4 pointer-events-none">
+                <h2 class="text-2xl font-bold mb-4 text-teal-600 dark:text-teal-400"><i class="fa-solid fa-circle-dollar-to-slot mr-2"></i> Cashflow</h2>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Monitor the flow of cash in and out of your accounts to ensure you always have the liquidity you need.</p>
+                <button class="bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 px-4 py-2 rounded-lg font-medium hover:bg-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-500">View Cashflow</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        &copy; 2026 No Math No Problem. Designed with Accessibility in mind.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Tab Logic ---
+            const tabButtons = [
+                document.getElementById('tab-btn-1'),
+                document.getElementById('tab-btn-2'),
+                document.getElementById('tab-btn-3')
+            ];
+            
+            const tabPanels = [
+                document.getElementById('panel-1'),
+                document.getElementById('panel-2'),
+                document.getElementById('panel-3')
+            ];
+
+            let activeTabIndex = -1;
+
+            function openTab(index) {
+                // If clicking the currently open tab, close it
+                if (activeTabIndex === index) {
+                    closeAllTabs();
+                    return;
+                }
+
+                closeAllTabs();
+                activeTabIndex = index;
+                
+                const btn = tabButtons[index];
+                const panel = tabPanels[index];
+
+                // Update Button State
+                btn.setAttribute('aria-selected', 'true');
+                btn.setAttribute('aria-expanded', 'true');
+                btn.classList.add('ring-4'); // Keep focus ring to show active state
+                
+                // Show Panel
+                panel.hidden = false;
+                
+                // Small delay to allow display:block to render before transitioning opacity
+                setTimeout(() => {
+                    panel.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                    panel.classList.add('opacity-100', 'translate-y-0');
+                }, 10);
+            }
+
+            function closeAllTabs() {
+                tabButtons.forEach(btn => {
+                    btn.setAttribute('aria-selected', 'false');
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.classList.remove('ring-4');
+                });
+                
+                tabPanels.forEach(panel => {
+                    panel.classList.remove('opacity-100', 'translate-y-0');
+                    panel.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                    // Hide completely after transition finishes
+                    setTimeout(() => {
+                        if (panel.classList.contains('opacity-0')) {
+                            panel.hidden = true;
+                        }
+                    }, 300); // Matches CSS transition duration
+                });
+                activeTabIndex = -1;
+            }
+
+            // Keyboard navigation for tabs (Arrow keys)
+            const tablist = document.querySelector('[role="tablist"]');
+            tablist.addEventListener('keydown', (e) => {
+                const isNeuroMode = document.body.classList.contains('neuro-mode');
+                // Neuro-mode users might rely strictly on Tab key, but arrow keys are standard ARIA tablist practice
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    let newIndex = activeTabIndex === -1 ? 0 : activeTabIndex;
+                    if (e.key === 'ArrowRight') {
+                        newIndex = (newIndex + 1) % tabButtons.length;
+                    } else if (e.key === 'ArrowLeft') {
+                        newIndex = (newIndex - 1 + tabButtons.length) % tabButtons.length;
+                    }
+                    tabButtons[newIndex].focus();
+                }
+            });
+
+            tabButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => openTab(index));
+                // Allow triggering via Enter or Space key
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openTab(index);
+                    }
+                });
+            });
+
+
+            // --- Dark Mode Toggle Logic ---
+            const darkToggleBtn = document.getElementById('dark-toggle');
+            const htmlElement = document.documentElement;
+            
+            function toggleDarkMode() {
+                const isDark = htmlElement.classList.toggle('dark');
+                darkToggleBtn.setAttribute('aria-checked', isDark.toString());
+                
+                const thumb = darkToggleBtn.querySelector('span');
+                if (isDark) {
+                    thumb.classList.replace('translate-x-1', 'translate-x-6');
+                    darkToggleBtn.classList.replace('bg-gray-300', 'bg-blue-600');
+                } else {
+                    thumb.classList.replace('translate-x-6', 'translate-x-1');
+                    darkToggleBtn.classList.replace('bg-blue-600', 'bg-gray-300');
+                }
+            }
+
+            darkToggleBtn.addEventListener('click', toggleDarkMode);
+            
+            // Check system preference on load
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                toggleDarkMode();
+            }
+
+
+            // --- Neuro-Accessibility Toggle Logic ---
+            const neuroToggleBtn = document.getElementById('neuro-toggle');
+            const bodyElement = document.body;
+            
+            function toggleNeuroMode() {
+                const isNeuro = bodyElement.classList.toggle('neuro-mode');
+                neuroToggleBtn.setAttribute('aria-checked', isNeuro.toString());
+                
+                const thumb = neuroToggleBtn.querySelector('.neuro-thumb');
+                if (isNeuro) {
+                    thumb.classList.replace('translate-x-1', 'translate-x-6');
+                    neuroToggleBtn.classList.replace('bg-gray-300', 'bg-purple-600');
+                } else {
+                    thumb.classList.replace('translate-x-6', 'translate-x-1');
+                    neuroToggleBtn.classList.replace('bg-purple-600', 'bg-gray-300');
+                }
+            }
+
+            neuroToggleBtn.addEventListener('click', toggleNeuroMode);
+        });
+    </script>
+</body>
+</html>
